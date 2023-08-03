@@ -14,6 +14,6 @@ export class EmployeeController {
 
   @Get(':employeeId')
   getEmployeeById(@Param('employeeId') employeeId: string): any {
-    return Employees.find((employee) => employee.id === parseInt(employeeId));
+    return this.employeeService.getEmployeeById(employeeId);
   }
 }
