@@ -6,13 +6,20 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { CustomLogger } from 'src/common/customer.logger';
 
 @Injectable()
 export class GlobalInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('Global Interceptor.');
-    const globalInterceptor = 'invoked';
+    const logger = new CustomLogger(GlobalInterceptor.name);
 
-    return next.handle().pipe(map((data) => ({ globalInterceptor, ...data })));
+    logger.log('Global Interceptor.');
+
+    return next.handle().pipe(
+      map((data) => {
+        Object.assign(data, { globalInterceptor: 'invoked' });
+        return data;
+      }),
+    );
   }
 }

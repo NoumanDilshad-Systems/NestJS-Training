@@ -5,6 +5,9 @@ import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Employee } from './modules/employee/entities/employee.entity';
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './modules/auth/auth.module';
+import { CustomLogger } from './common/customer.logger';
 
 @Module({
   imports: [
@@ -16,10 +19,18 @@ import { Module } from '@nestjs/common';
       database: 'postgres',
       entities: [Employee],
     }),
+    JwtModule.register({
+      secret: 'MyJWTSecret',
+      signOptions: {
+        expiresIn: '1h',
+      },
+      global: true,
+    }),
+    AuthModule,
     EmployeeModule,
     UserModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, CustomLogger],
 })
 export class AppModule {}

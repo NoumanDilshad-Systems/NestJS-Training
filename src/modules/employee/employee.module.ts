@@ -17,6 +17,7 @@ import { ModuleBasedInterceptor } from 'src/interceptors/module-based.intercepto
       useClass: ModuleBasedInterceptor,
     },
   ],
+  exports: [EmployeeService],
 })
 export class EmployeeModule {
   configure(consumer: MiddlewareConsumer) {
